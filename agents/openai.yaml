@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mac App Store Release"
+  short_description: "Audit and submit macOS apps to App Store Connect"
+  default_prompt: "Prepare and submit this macOS app to App Store Connect. Prefer deterministic CLI checks and API automation, preserve credentials outside the repository, and require explicit authorization before final review submission."
