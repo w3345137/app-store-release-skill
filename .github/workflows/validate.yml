@@ -1,0 +1,98 @@
+name: Validate skill
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate skill structure
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          text = Path("SKILL.md").read_text(encoding="utf-8")
+          assert text.startswith("---\n")
+          header = text.split("---", 2)[1]
+          assert re.search(r"^name:\s*app-store-release\s*$", header, re.M)
+          assert re.search(r"^description:\s*.+$", header, re.M)
+          for required in [
+              "references/apple-app-store.md",
+              "references/microsoft-store.md",
+              "references/checklist.md",
+              "scripts/audit-macos-app.sh",
+              "scripts/audit-windows-store-app.ps1",
+              "scripts/verify-msix.ps1",
+          ]:
+              assert Path(required).is_file(), required
+
+  windows-msix:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locate Windows SDK tools
+        shell: pwsh
+        run: |
+          $makeAppx = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin" -Filter makeappx.exe -Recurse |
+            Sort-Object FullName -Descending |
+            Select-Object -First 1
+          if (-not $makeAppx) { throw 'makeappx.exe not found' }
+          Add-Content -Path $env:GITHUB_PATH -Value $makeAppx.DirectoryName
+      - name: Build synthetic MSIX
+        shell: pwsh
+        run: |
+          $layout = Join-Path $env:RUNNER_TEMP 'layout'
+          New-Item -ItemType Directory -Path (Join-Path $layout 'Assets') -Force | Out-Null
+          Set-Content -LiteralPath (Join-Path $layout 'App.exe') -Value 'test'
+          Add-Type -AssemblyName System.Drawing
+          foreach ($asset in @(
+            @{Name='StoreLogo.png'; Width=50; Height=50},
+            @{Name='Square150x150Logo.png'; Width=150; Height=150},
+            @{Name='Square44x44Logo.png'; Width=44; Height=44}
+          )) {
+            $bitmap = New-Object System.Drawing.Bitmap($asset.Width, $asset.Height)
+            $bitmap.Save((Join-Path $layout "Assets/$($asset.Name)"), [System.Drawing.Imaging.ImageFormat]::Png)
+            $bitmap.Dispose()
+          }
+          @'
+          <?xml version="1.0" encoding="utf-8"?>
+          <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+                   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+                   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+                   IgnorableNamespaces="uap rescap">
+            <Identity Name="Example.AppStoreRelease" Publisher="CN=Example" Version="1.2.3.4" ProcessorArchitecture="x64" />
+            <Properties>
+              <DisplayName>Example</DisplayName>
+              <PublisherDisplayName>Example</PublisherDisplayName>
+              <Logo>Assets\StoreLogo.png</Logo>
+            </Properties>
+            <Resources><Resource Language="en-us" /></Resources>
+            <Dependencies><TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26100.0" /></Dependencies>
+            <Applications>
+              <Application Id="App" Executable="App.exe" EntryPoint="Windows.FullTrustApplication">
+                <uap:VisualElements DisplayName="Example" Description="Example" BackgroundColor="transparent"
+                  Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" />
+              </Application>
+            </Applications>
+            <Capabilities><rescap:Capability Name="runFullTrust" /></Capabilities>
+          </Package>
+          '@ | Set-Content -LiteralPath (Join-Path $layout 'AppxManifest.xml') -Encoding utf8
+          makeappx.exe pack /d $layout /p "$env:RUNNER_TEMP\example.msix" /o
+      - name: Verify PowerShell helpers
+        shell: pwsh
+        run: |
+          ./scripts/verify-msix.ps1 `
+            -Package "$env:RUNNER_TEMP\example.msix" `
+            -ExpectedName 'Example.AppStoreRelease' `
+            -ExpectedPublisher 'CN=Example' `
+            -ExpectedVersion '1.2.3.4' `
+            -ForbiddenString 'updates/latest.json'
+          ./scripts/audit-windows-store-app.ps1 `
+            -Repo . `
+            -Package "$env:RUNNER_TEMP\example.msix" `
+            -ExpectedName 'Example.AppStoreRelease' `
+            -ExpectedPublisher 'CN=Example'

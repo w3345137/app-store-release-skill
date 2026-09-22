@@ -1,27 +1,27 @@
-# Apple App Store Release Skill
+# App Store Release Skill
 
-A reusable Codex skill for preparing, validating, uploading, and submitting macOS and companion iOS apps to App Store Connect.
+A reusable Codex skill for preparing, validating, uploading, and submitting apps to Apple App Store Connect and Microsoft Partner Center.
 
-It focuses on the parts that commonly fail late in the process: signing and entitlements, privacy manifests, export compliance, device-specific screenshots, metadata persistence, free-to-paid transitions, agreements and banking readiness, direct-sale license recovery, regional compliance, build selection, and review-state verification.
+It covers macOS/iOS App Store and Windows Microsoft Store release work: signing, package identity, entitlements or capabilities, privacy and policy declarations, screenshots and metadata, reviewer access, certification submission, staged release, rejection remediation, and final state verification.
 
 ## Install
 
-Copy this repository to your Codex skills directory:
-
 ```bash
-git clone https://github.com/w3345137/mac-app-store-release-skill.git \
-  "${CODEX_HOME:-$HOME/.codex}/skills/mac-app-store-release"
+git clone https://github.com/w3345137/app-store-release-skill.git \
+  "${CODEX_HOME:-$HOME/.codex}/skills/app-store-release"
 ```
 
-Restart Codex after installation. The skill is discovered automatically for Mac App Store release work.
+Restart Codex after installation. The skill is discovered automatically for Apple and Microsoft Store release work.
 
 ## Included helpers
 
 - `scripts/audit-macos-app.sh`: inspect resolved Xcode build settings and locate privacy and entitlement files.
-- `scripts/check-screenshot.sh`: validate one or more common macOS App Store screenshot dimensions.
-- `scripts/asc-package.sh`: validate or upload a macOS `.pkg` or iOS `.ipa`, and wait for a delivery ID to finish processing, using App Store Connect API credentials supplied through environment variables.
+- `scripts/check-screenshot.sh`: validate common macOS App Store screenshot dimensions.
+- `scripts/asc-package.sh`: validate or upload Apple `.pkg` and `.ipa` packages and inspect processing status.
+- `scripts/audit-windows-store-app.ps1`: inspect Windows Store source configuration and optionally verify a final MSIX-family package.
+- `scripts/verify-msix.ps1`: unpack and verify MSIX identity, version, architecture, capabilities, hash, and forbidden embedded strings.
 
-The skill never stores credentials. Legal declarations and the final review submission remain explicit user decisions.
+The skill never stores credentials. Legal declarations and final certification submission remain explicit user decisions.
 
 ## License
 
