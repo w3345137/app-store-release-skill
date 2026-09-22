@@ -29,9 +29,11 @@
 - Countries/regions and distribution method are configured.
 - China mainland is included or excluded from actual compliance evidence. If App Store Connect reports a missing ICP filing number or another permit, record that exact blocker; do not exclude the storefront merely because the app is paid.
 - Required agreements are active; tax and banking are complete if paid.
+- The account holder personally accepted any new legal agreement; automation only verified its resulting active state.
 - DSA trader status is explicitly confirmed for EU distribution.
 - Export compliance is answered from the shipped binary, not by guesswork.
 - Privacy answers match code, dependencies, and network behavior.
+- For website-sold Mac licenses, payment completion, duplicate webhook delivery, early renewal, browser-close recovery, cross-device recovery, refund/chargeback state, and application activation are tested end to end. Recovery credentials are not placed in URL paths or server access logs, and any stored buyer identifier is minimized and disclosed.
 
 ## Submission evidence
 

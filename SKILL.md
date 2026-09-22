@@ -13,6 +13,7 @@ Ship macOS and companion iOS apps with reproducible evidence. Treat app-record c
 - Keep API keys, Apple IDs, app-specific passwords, certificates, and `.p8` files outside the repository. Never print their contents.
 - Prefer `xcodebuild`, `codesign`, `security`, `plutil`, `xcrun altool`, and the App Store Connect API. Reuse an existing authenticated App Store Connect session only where API or CLI coverage is absent.
 - Do not infer legal declarations. DSA trader status, content rights, export-control answers, and privacy answers must follow verified product facts or an explicit user choice.
+- Prepare and inspect legal agreements, but leave acceptance of contracts such as the Paid Apps Agreement to the account holder. A visible unchecked agreement is a blocker, not authorization to accept it.
 - Treat the commercial model as a release invariant. A free companion, a separately paid app, and an app with in-app purchases require different code, metadata, agreements, and review notes; do not silently carry a desktop trial or license into a separately purchased mobile app.
 - Uploading a build is not authorization to submit it for review. Obtain explicit authorization before the final submission action. Approval is not authorization for an automatic public release unless the user asked for it.
 - Do not use screenshots containing personal bookmarks, history, accounts, internal URLs, email, names, or company-only data. Use real app UI; crop or redact private chrome before upload.
@@ -33,6 +34,7 @@ Ship macOS and companion iOS apps with reproducible evidence. Treat app-record c
    - Derive required screenshot families from the resolved target device family and supported platforms. If an iOS target includes iPad, provide and inspect an accepted iPad screenshot instead of assuming iPhone assets are sufficient.
    - Commerce: free/paid price, availability, distribution method, active agreements, tax category, DSA status for EU distribution, and export compliance.
    - Before changing an app from free to paid, verify that the Paid Apps Agreement is active and that required tax and banking information can be completed. A one-time paid download is sold by the App Store and does not require StoreKit purchase UI inside the app.
+   - For a separately distributed Mac app sold on the website, verify the complete payment lifecycle: signed webhook fulfillment, idempotency, entitlement recovery after closing or clearing the browser, renewal behavior, and refund or chargeback handling. Treat self-service recovery as a release requirement when no public support channel exists. Keep bearer claims out of URLs and access logs.
    - For China mainland, inspect the app's actual compliance section and status. Apple says additional documentation, including an ICP filing number, is required for some apps; do not exclude China preemptively unless the product category or App Store Connect state shows a real requirement that cannot yet be met.
 3. Build and upload.
    - Prefer a project-owned archive/export script. Otherwise archive with `xcodebuild archive` and export with an App Store export-options plist.
