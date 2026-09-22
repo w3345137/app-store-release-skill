@@ -2,7 +2,7 @@
 
 A reusable Codex skill for preparing, validating, uploading, and submitting macOS and companion iOS apps to App Store Connect.
 
-It focuses on the parts that commonly fail late in the process: signing and entitlements, privacy manifests, export compliance, screenshots, metadata persistence, commerce and DSA requirements, build selection, and review-state verification.
+It focuses on the parts that commonly fail late in the process: signing and entitlements, privacy manifests, export compliance, device-specific screenshots, metadata persistence, free-to-paid transitions, agreements and banking readiness, regional compliance, build selection, and review-state verification.
 
 ## Install
 

@@ -13,6 +13,7 @@ Ship macOS and companion iOS apps with reproducible evidence. Treat app-record c
 - Keep API keys, Apple IDs, app-specific passwords, certificates, and `.p8` files outside the repository. Never print their contents.
 - Prefer `xcodebuild`, `codesign`, `security`, `plutil`, `xcrun altool`, and the App Store Connect API. Reuse an existing authenticated App Store Connect session only where API or CLI coverage is absent.
 - Do not infer legal declarations. DSA trader status, content rights, export-control answers, and privacy answers must follow verified product facts or an explicit user choice.
+- Treat the commercial model as a release invariant. A free companion, a separately paid app, and an app with in-app purchases require different code, metadata, agreements, and review notes; do not silently carry a desktop trial or license into a separately purchased mobile app.
 - Uploading a build is not authorization to submit it for review. Obtain explicit authorization before the final submission action. Approval is not authorization for an automatic public release unless the user asked for it.
 - Do not use screenshots containing personal bookmarks, history, accounts, internal URLs, email, names, or company-only data. Use real app UI; crop or redact private chrome before upload.
 - Verify every mutation by reading the resulting state back. A successful click, HTTP response, or CLI exit code alone is not completion.
@@ -29,7 +30,10 @@ Ship macOS and companion iOS apps with reproducible evidence. Treat app-record c
    - Signing: Apple Distribution identity, App Store provisioning, hardened runtime, sandbox, and only justified entitlements.
    - Privacy: `PrivacyInfo.xcprivacy`, usage descriptions, SDK manifests, privacy-policy URL, and App Store privacy answers agree with runtime behavior.
    - Product page: localized name, subtitle, description, keywords, support URL, marketing URL, copyright, category, age rating, screenshots, and review notes.
+   - Derive required screenshot families from the resolved target device family and supported platforms. If an iOS target includes iPad, provide and inspect an accepted iPad screenshot instead of assuming iPhone assets are sufficient.
    - Commerce: free/paid price, availability, distribution method, active agreements, tax category, DSA status for EU distribution, and export compliance.
+   - Before changing an app from free to paid, verify that the Paid Apps Agreement is active and that required tax and banking information can be completed. A one-time paid download is sold by the App Store and does not require StoreKit purchase UI inside the app.
+   - For China mainland, inspect the app's actual compliance section and status. Apple says additional documentation, including an ICP filing number, is required for some apps; do not exclude China preemptively unless the product category or App Store Connect state shows a real requirement that cannot yet be met.
 3. Build and upload.
    - Prefer a project-owned archive/export script. Otherwise archive with `xcodebuild archive` and export with an App Store export-options plist.
    - Validate an exported macOS `.pkg` or iOS `.ipa` with `scripts/asc-package.sh validate <path>` and upload with `scripts/asc-package.sh upload <path>`. The script infers the platform from the file extension unless an explicit platform is provided.
@@ -39,10 +43,12 @@ Ship macOS and companion iOS apps with reproducible evidence. Treat app-record c
    - Validate screenshots with `scripts/check-screenshot.sh` before upload.
    - Inspect each final screenshot at full size. Check the tab strip, bookmarks bar, address bar, page content, menu bar, Dock, notifications, and window background for private or irrelevant state.
    - Save, reload, and read back all fields. Browser-side text changes may appear locally before App Store Connect has persisted them.
+   - Read back the storefront price, not only the base price selection, and verify that the intended countries or regions remain selected after saving.
 5. Submit only after explicit authorization.
    - Resolve every blocking warning.
    - Choose manual release unless the user explicitly requests automatic release.
    - A submission confirmation dialog is intermediate evidence. Open App Review and verify the exact version/build changed to the localized equivalent of `WAITING_FOR_REVIEW` or a later review state.
+   - If a version is already in review and needs a new build or commercial model, finish the replacement build and commerce preflight before removing the existing submission. Then recheck every editable field and submit the replacement as a new review submission.
 6. Record the release.
    - Update the project release notes or project memory with App ID, version/build, submission time, release mode, URLs, and remaining reviewer risks. Never record credentials.
 
@@ -51,6 +57,8 @@ Ship macOS and companion iOS apps with reproducible evidence. Treat app-record c
 - Generic “try again later” after adding for review often means missing price, availability, agreement, DSA declaration, export compliance, or a required screenshot—not necessarily a transient outage.
 - A processed build may still be blocked by an unanswered encryption declaration or mismatched bundle/version metadata.
 - A free app still needs an active Free Apps agreement and availability. EU availability also requires a DSA trader/non-trader declaration.
+- A paid app needs an active Paid Apps Agreement plus the required tax and banking setup. Upload success does not prove that pricing can be activated.
+- China mainland availability is not automatically incompatible with a paid app. Use the exact App Store Connect compliance status; `ICP Filing Number Missing` is a concrete blocker, while a generic assumption is not.
 - App Store screenshots must use accepted pixel dimensions. Validate the final file, not the source capture.
 - “Ready to Submit” is not “submitted”; verify the state after the final action.
 - If a submission is cancelled to revise metadata, treat the replacement as a new submission: reload the version page, recheck the screenshot and description, submit again, then read back App Review status.

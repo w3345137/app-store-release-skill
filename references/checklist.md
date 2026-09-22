@@ -17,13 +17,17 @@
 - The App Store version string matches the uploaded build's `CFBundleShortVersionString`; do not assume the default `1.0` matches a prerelease build.
 - Name, subtitle, description, keywords, category, age rating, support URL, marketing URL, and privacy URL are complete.
 - Screenshots use accepted dimensions and show real, current UI without private data. Inspect tab titles, pinned tabs, bookmarks, address text, page content, menus, notifications, menu bar, Dock, and background windows.
+- Screenshot families cover every advertised device class. Resolve `TARGETED_DEVICE_FAMILY` and platform support first; an iPhone+iPad app needs accepted assets for both device classes unless App Store Connect explicitly says otherwise.
 - Review contact and notes are current; demo credentials are provided only when required.
 - Content-rights declaration matches embedded or catalogued third-party content.
 
 ## Commerce and legal
 
 - Free or paid price is configured.
+- The commercial model in code, product-page copy, review notes, and website agrees: free companion, separately paid download, or StoreKit purchase.
+- For a separately paid download, the Paid Apps Agreement is active and required tax and banking information is complete. The app does not add a redundant StoreKit paywall.
 - Countries/regions and distribution method are configured.
+- China mainland is included or excluded from actual compliance evidence. If App Store Connect reports a missing ICP filing number or another permit, record that exact blocker; do not exclude the storefront merely because the app is paid.
 - Required agreements are active; tax and banking are complete if paid.
 - DSA trader status is explicitly confirmed for EU distribution.
 - Export compliance is answered from the shipped binary, not by guesswork.
@@ -34,6 +38,7 @@
 - Upload output and delivery ID are retained without storing credentials.
 - Delivery processing reaches a terminal success state before the build is treated as available in App Store Connect.
 - Uploaded build is processed and attached to the intended version.
+- If replacing a submission already in review, the replacement build and commerce setup were ready before the previous submission was removed.
 - Metadata save succeeds and survives reload.
 - Release mode is intentional: manual, automatic, or phased as supported.
 - Submission confirmation is followed by an App Review page readback for the exact version/build.
