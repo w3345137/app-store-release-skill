@@ -1,11 +1,11 @@
 ---
 name: mac-app-store-release
-description: "Prepare, validate, upload, and submit a macOS app to App Store Connect. Use for Mac App Store readiness audits, Xcode archives, signing and entitlement checks, screenshots and metadata, privacy declarations, export compliance, pricing and availability, TestFlight/App Store build selection, or review submission. Prefer CLI and App Store Connect API operations; use the website only for unsupported declarations and the final confirmation when needed."
+description: "Prepare, validate, upload, and submit macOS and companion iOS apps to App Store Connect. Use for App Store readiness audits, Xcode archives, signing and entitlement checks, screenshots and metadata, privacy declarations, export compliance, pricing and availability, TestFlight/App Store build selection, or review submission. Prefer CLI and App Store Connect API operations; use the website only for unsupported declarations and the final confirmation when needed."
 ---
 
-# Mac App Store Release
+# Apple App Store Release
 
-Ship a macOS app with reproducible evidence. Treat archive upload, version preparation, review submission, approval, and public release as separate states.
+Ship macOS and companion iOS apps with reproducible evidence. Treat app-record creation, archive upload, processing, version preparation, review submission, approval, and public release as separate states.
 
 ## Operating rules
 
@@ -22,7 +22,9 @@ Ship a macOS app with reproducible evidence. Treat archive upload, version prepa
 1. Discover the app target and current release state.
    - Run `scripts/audit-macos-app.sh <repo> [scheme] [configuration]`. Pass the actual store configuration rather than assuming `Release`.
    - Read any release documents and `Info.plist`, entitlements, privacy manifest, project settings, and archive/export scripts.
-   - Record bundle ID, marketing version, build number, minimum macOS version, team ID, category, and App Store Connect IDs.
+   - Record bundle ID, marketing version, build number, minimum OS version, platform, team ID, category, and App Store Connect IDs.
+   - For a new App Store Connect record, fix the intended name, primary locale, platform, registered Bundle ID, SKU, and access scope before opening the creation form. Read the created Apple ID back from App Store Connect; a successful click is not evidence.
+   - App Store Connect may create an initial store version such as `1.0` even when the binary uses `0.1.0`. Treat the store version and `CFBundleShortVersionString` as separate values and make them agree before attaching a build for App Review.
 2. Audit App Store requirements.
    - Signing: Apple Distribution identity, App Store provisioning, hardened runtime, sandbox, and only justified entitlements.
    - Privacy: `PrivacyInfo.xcprivacy`, usage descriptions, SDK manifests, privacy-policy URL, and App Store privacy answers agree with runtime behavior.
@@ -30,8 +32,8 @@ Ship a macOS app with reproducible evidence. Treat archive upload, version prepa
    - Commerce: free/paid price, availability, distribution method, active agreements, tax category, DSA status for EU distribution, and export compliance.
 3. Build and upload.
    - Prefer a project-owned archive/export script. Otherwise archive with `xcodebuild archive` and export with an App Store export-options plist.
-   - Validate the exported `.pkg` with `scripts/asc-package.sh validate <pkg>` and upload with `scripts/asc-package.sh upload <pkg>`.
-   - Wait for App Store Connect processing and verify the exact bundle version/build appears and is selectable.
+   - Validate an exported macOS `.pkg` or iOS `.ipa` with `scripts/asc-package.sh validate <path>` and upload with `scripts/asc-package.sh upload <path>`. The script infers the platform from the file extension unless an explicit platform is provided.
+   - Capture the delivery ID returned by upload. Use `scripts/asc-package.sh status <delivery-id>` to wait for import processing, then verify the exact marketing version/build appears and is selectable in the intended app.
 4. Complete metadata and attach the processed build.
    - Use App Store Connect API endpoints when credentials are configured; use the website only for fields without stable API support or legal confirmations.
    - Validate screenshots with `scripts/check-screenshot.sh` before upload.

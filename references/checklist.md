@@ -13,6 +13,8 @@
 
 ## Product page
 
+- For a newly created app, name, platform, primary locale, Bundle ID, SKU, access scope, and Apple ID are read back after creation.
+- The App Store version string matches the uploaded build's `CFBundleShortVersionString`; do not assume the default `1.0` matches a prerelease build.
 - Name, subtitle, description, keywords, category, age rating, support URL, marketing URL, and privacy URL are complete.
 - Screenshots use accepted dimensions and show real, current UI without private data. Inspect tab titles, pinned tabs, bookmarks, address text, page content, menus, notifications, menu bar, Dock, and background windows.
 - Review contact and notes are current; demo credentials are provided only when required.
@@ -29,6 +31,8 @@
 
 ## Submission evidence
 
+- Upload output and delivery ID are retained without storing credentials.
+- Delivery processing reaches a terminal success state before the build is treated as available in App Store Connect.
 - Uploaded build is processed and attached to the intended version.
 - Metadata save succeeds and survives reload.
 - Release mode is intentional: manual, automatic, or phased as supported.
