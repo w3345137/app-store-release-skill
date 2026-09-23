@@ -7,6 +7,7 @@
 - Final package came from a clean, reproducible build and has a retained SHA-256 hash.
 - Exact build inputs are frozen and checked after the build; a dirty worktree has an input hash manifest and a release receipt tying that manifest to the exported package.
 - Credentials, signing keys, certificates, and secrets are absent from repository and package.
+- Time-limited access is rechecked at expiry in the main app and independent extensions or workers; cached grants do not survive expiry or a backward clock jump.
 - Privacy declarations, permissions, capabilities/entitlements, network behavior, and reviewer notes agree with runtime behavior.
 - Screenshots show the current build and contain no personal or internal data.
 - Demo credentials use an account containing only stable demonstration data.
