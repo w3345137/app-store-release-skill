@@ -16,6 +16,7 @@ Use this reference for macOS, iOS, App Store Connect, TestFlight, Xcode archives
 - Verify `PrivacyInfo.xcprivacy`, usage descriptions, SDK manifests, privacy-policy URL, and privacy answers against actual runtime behavior.
 - Derive screenshot families from resolved target device family and supported platforms. If iPad is supported, provide an accepted iPad screenshot.
 - Verify pricing, availability, distribution method, agreements, tax category, DSA status, export compliance, and region-specific compliance.
+- For iPhone/iPad apps, inspect the separate Apple-silicon Mac and Vision Pro availability switches. They may be enabled even if those platforms were not part of the product plan; test their experience and pricing implications before leaving them on.
 - Do not automate acceptance of legal agreements. The account holder must accept contracts such as the Paid Apps Agreement.
 - For China mainland, use the exact App Store Connect compliance state. Do not exclude China based only on a generic assumption about ICP requirements.
 
@@ -41,5 +42,5 @@ Use this reference for macOS, iOS, App Store Connect, TestFlight, Xcode archives
 - Generic add-for-review failure often means missing price, availability, agreement, DSA declaration, export compliance, or a required screenshot.
 - A processed build can still be blocked by encryption declarations or mismatched bundle/version metadata.
 - A free app still needs an active Free Apps agreement and availability configuration.
-- A paid app needs an active Paid Apps Agreement plus tax and banking setup.
+- A paid app needs an active Paid Apps Agreement plus completed tax and banking setup. Read all three states separately: an agreement marked “Waiting for User Info” does not mean ready, a bank account can remain “Processing,” and individual tax forms may still show missing information after another form becomes active. Do not treat the agreement date or a valid regional compliance row as proof that paid distribution is enabled.
 - Cancelling an in-review submission to replace a build creates a new verification cycle: reload every editable field and read the new App Review state back.

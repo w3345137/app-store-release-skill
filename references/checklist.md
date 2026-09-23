@@ -20,6 +20,7 @@
 - `PrivacyInfo.xcprivacy`, usage descriptions, encryption declaration, SDK manifests, and App Store privacy answers agree.
 - Store version equals `CFBundleShortVersionString`; build number is unique.
 - Required iPhone/iPad/macOS screenshot families are present based on actual target support.
+- For an iPhone/iPad app, Apple-silicon Mac and Vision Pro availability are intentional and do not contradict a separate desktop product or price.
 - Price, availability, agreements, tax/banking state if paid, DSA status, export compliance, and regional compliance are complete.
 - Uploaded delivery reaches terminal success and exact version/build is selectable.
 - Final state is `WAITING_FOR_REVIEW` or later.
