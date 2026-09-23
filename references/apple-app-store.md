@@ -16,6 +16,7 @@ Use this reference for macOS, iOS, App Store Connect, TestFlight, Xcode archives
 - Verify `PrivacyInfo.xcprivacy`, usage descriptions, SDK manifests, privacy-policy URL, and privacy answers against actual runtime behavior.
 - Derive screenshot families from resolved target device family and supported platforms. If iPad is supported, provide an accepted iPad screenshot.
 - Verify pricing, availability, distribution method, agreements, tax category, DSA status, export compliance, and region-specific compliance.
+- Keep website-direct macOS sales separate from App Store payments: the Paid Apps Agreement and StoreKit In-App Purchase do not process purchases for a Developer ID app distributed outside the Mac App Store. Apple Pay on a website is a wallet checkout method and still needs a merchant/payment provider plus order fulfillment; verify that provider's account, domain, device, and currency requirements before promising Apple Pay in release copy.
 - For iPhone/iPad apps, inspect the separate Apple-silicon Mac and Vision Pro availability switches. They may be enabled even if those platforms were not part of the product plan; test their experience and pricing implications before leaving them on.
 - Do not automate acceptance of legal agreements. The account holder must accept contracts such as the Paid Apps Agreement.
 - For China mainland, use the exact App Store Connect compliance state. Do not exclude China based only on a generic assumption about ICP requirements.
