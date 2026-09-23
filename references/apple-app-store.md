@@ -36,6 +36,8 @@ Use this reference for macOS, iOS, App Store Connect, TestFlight, Xcode archives
 
 ## Common blockers
 
+- A first app from a developer account with limited review history may be rejected under Guideline 2.1 for more information even when the binary processes successfully. Read the exact Resolution Center message. Apple may require a screen recording from a physical device on the latest OS, beginning at app launch and showing the typical flow, plus the app purpose/audience, setup and access steps, external services, regional differences, and rights to regulated or third-party material. Prepare an accurate reply and repeat the durable facts in App Review Notes. A simulator recording, a static preview, or a processed TestFlight build does not prove this gate is satisfied.
+- If reviewers cannot access account-based or private-server features, give them a stable demo-only route or sample environment. Do not expose a personal production account or claim that a read-only mockup demonstrates live network functionality. Check the exact submitted build on each supported physical device platform before replying.
 - Generic add-for-review failure often means missing price, availability, agreement, DSA declaration, export compliance, or a required screenshot.
 - A processed build can still be blocked by encryption declarations or mismatched bundle/version metadata.
 - A free app still needs an active Free Apps agreement and availability configuration.
