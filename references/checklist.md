@@ -5,6 +5,7 @@
 - Target store and distribution channel are explicit.
 - Store identity, product ID, version/build, architecture/platform, minimum OS, and commercial model are recorded.
 - Final package came from a clean, reproducible build and has a retained SHA-256 hash.
+- Exact build inputs are frozen and checked after the build; a dirty worktree has an input hash manifest and a release receipt tying that manifest to the exported package.
 - Credentials, signing keys, certificates, and secrets are absent from repository and package.
 - Privacy declarations, permissions, capabilities/entitlements, network behavior, and reviewer notes agree with runtime behavior.
 - Screenshots show the current build and contain no personal or internal data.

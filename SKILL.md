@@ -29,7 +29,7 @@ Ship Apple and Microsoft Store apps with reproducible evidence. Treat code readi
 
 1. Discover the target store, product identity, current release state, commercial model, and intended release mode.
 2. Audit code and runtime behavior for that store channel, including permissions, privacy, updater behavior, authentication, review access, and package identity.
-3. Build the exact store artifact from a clean checkout or reproducible CI job. Record the commit, version, build, artifact hash, and build log.
+3. Build the exact store artifact from a clean checkout or reproducible CI job. If the authorized source is an uncommitted worktree, hash every build input before and after packaging and label the receipt accordingly. Record the commit, version, build, artifact hash, and build log.
 4. Validate the final artifact, not only source configuration. Inspect package metadata, signature expectations, capabilities or entitlements, embedded resources, and forbidden production markers.
 5. Complete listing metadata and reviewer access. Use a demo-only account when login is required; verify it immediately before submission without disclosing the password.
 6. Upload and wait for package processing. Read back the exact version/build and attach the processed package to the intended submission.
