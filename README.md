@@ -16,7 +16,7 @@ Restart Codex after installation. The skill is discovered automatically for Appl
 ## Included helpers
 
 - `scripts/audit-macos-app.sh`: inspect resolved Xcode build settings and locate privacy and entitlement files.
-- `scripts/check-screenshot.sh`: validate common macOS App Store screenshot dimensions.
+- `scripts/check-screenshot.sh`: validate current iPhone, iPad, macOS, Apple TV, Apple Vision Pro, and Apple Watch screenshot dimensions and reject alpha/transparency. Use `--platform` to require a specific family.
 - `scripts/asc-package.sh`: validate or upload Apple `.pkg` and `.ipa` packages and inspect processing status.
 - `scripts/audit-windows-store-app.ps1`: inspect Windows Store source configuration and optionally verify a final MSIX-family package.
 - `scripts/verify-msix.ps1`: unpack and verify MSIX identity, version, architecture, capabilities, hash, and forbidden embedded strings.

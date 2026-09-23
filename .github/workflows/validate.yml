@@ -27,8 +27,45 @@ jobs:
               "scripts/audit-macos-app.sh",
               "scripts/audit-windows-store-app.ps1",
               "scripts/verify-msix.ps1",
+              "scripts/check-screenshot.sh",
           ]:
               assert Path(required).is_file(), required
+
+  apple-screenshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate screenshot fixtures
+        shell: python
+        run: |
+          import struct, zlib
+          from pathlib import Path
+
+          def png(path, width, height, color_type):
+              channels = 4 if color_type == 6 else 3
+              row = b"\0" + bytes([40, 80, 160, 255][:channels]) * width
+              raw = row * height
+              def chunk(name, payload):
+                  return struct.pack(">I", len(payload)) + name + payload + struct.pack(">I", zlib.crc32(name + payload) & 0xffffffff)
+              data = b"\x89PNG\r\n\x1a\n"
+              data += chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, color_type, 0, 0, 0))
+              data += chunk(b"IDAT", zlib.compress(raw, 9))
+              data += chunk(b"IEND", b"")
+              Path(path).write_bytes(data)
+
+          png("iphone.png", 1320, 2868, 2)
+          png("ipad.png", 2064, 2752, 2)
+          png("mac.png", 1440, 900, 2)
+          png("alpha.png", 1320, 2868, 6)
+      - name: Validate Apple screenshot families
+        shell: bash
+        run: |
+          ./scripts/check-screenshot.sh --platform iphone iphone.png
+          ./scripts/check-screenshot.sh --platform ipad ipad.png
+          ./scripts/check-screenshot.sh --platform macos mac.png
+          ./scripts/check-screenshot.sh --platform ios iphone.png ipad.png
+          if ./scripts/check-screenshot.sh --platform iphone ipad.png; then exit 1; fi
+          if ./scripts/check-screenshot.sh --platform iphone alpha.png; then exit 1; fi
 
   windows-msix:
     runs-on: windows-latest

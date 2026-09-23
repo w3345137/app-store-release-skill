@@ -29,7 +29,7 @@ Use this reference for macOS, iOS, App Store Connect, TestFlight, Xcode archives
 ## Metadata and submission
 
 - Use App Store Connect APIs where credentials are configured; use the website for unsupported fields and account-bound declarations.
-- Validate screenshots with `scripts/check-screenshot.sh`, then inspect every final image at full size.
+- Validate screenshots with `scripts/check-screenshot.sh --platform <iphone|ipad|macos|tvos|visionos|watchos>`, then inspect every final image at full size. The helper rejects alpha/transparency as required by App Store Connect.
 - Read back price, countries or regions, release mode, review contact, demo credentials, export-compliance answers, and attached build after saving.
 - Prefer manual release unless the user explicitly requests automatic or phased release.
 - A confirmation dialog is intermediate evidence. Verify the exact version/build reaches `WAITING_FOR_REVIEW` or a later state.
