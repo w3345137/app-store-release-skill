@@ -11,6 +11,7 @@
 - Demo credentials use an account containing only stable demonstration data.
 - Any App Review request for a physical-device video or additional new-developer information is answered with evidence from the exact reviewed build and a reviewer-accessible demo path; the same durable details are saved in App Review Notes.
 - Metadata survives reload and the processed package is attached to the intended version/submission.
+- Before public availability, website Store/download calls to action remain non-interactive, including for keyboard and accessibility users; do not leave a placeholder `href="#"` on a hidden link. After launch, verify the real destination works.
 - Release mode and markets are intentional.
 - Final submission has explicit user authorization and its resulting review/certification state is read back.
 
