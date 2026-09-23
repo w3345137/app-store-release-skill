@@ -32,6 +32,7 @@ Use this reference for macOS, iOS, App Store Connect, TestFlight, Xcode archives
 - Use App Store Connect APIs where credentials are configured; use the website for unsupported fields and account-bound declarations.
 - Validate screenshots with `scripts/check-screenshot.sh --platform <iphone|ipad|macos|tvos|visionos|watchos>`, then inspect every final image at full size. The helper rejects alpha/transparency as required by App Store Connect.
 - Read back price, countries or regions, release mode, review contact, demo credentials, export-compliance answers, and attached build after saving.
+- If the user specifies an exact price in a local currency, inspect the App Store Connect base country/region before choosing a global price tier. A USD base tier can convert to a different local amount; use an appropriate base region or a custom regional price, then read back the actual storefront amount.
 - Prefer manual release unless the user explicitly requests automatic or phased release.
 - A confirmation dialog is intermediate evidence. Verify the exact version/build reaches `WAITING_FOR_REVIEW` or a later state.
 
