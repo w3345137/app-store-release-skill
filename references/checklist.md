@@ -8,6 +8,7 @@
 - Exact build inputs are frozen and checked after the build; a dirty worktree has an input hash manifest and a release receipt tying that manifest to the exported package.
 - Credentials, signing keys, certificates, and secrets are absent from repository and package.
 - If a direct-sale entitlement service runs as a dedicated OS user, verify that user can traverse each secret directory and read only the intended key files; root-only read checks are insufficient. Verify the service user cannot write the containing directory, and validate the actual systemd/service identity before opening checkout.
+- Direct-sale payment tests cover delayed successful webhooks after claim expiry/cleanup, duplicate deliveries, receipt-based recovery, and first/middle/latest annual-purchase refunds or chargebacks. Out-of-order adjustment delivery cannot undo a newer decision; the offline-token revocation limit is documented.
 - Time-limited access is rechecked at expiry in the main app and independent extensions or workers; cached grants do not survive expiry or a backward clock jump.
 - Privacy declarations, permissions, capabilities/entitlements, network behavior, and reviewer notes agree with runtime behavior.
 - Debug/test builds cannot share the production app's TCC identity or writable app group; built Debug and Release identities are inspected separately before testing production permission continuity.
