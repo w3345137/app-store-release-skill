@@ -35,6 +35,7 @@ Use this reference for macOS, iOS, App Store Connect, TestFlight, Xcode archives
 - Prefer the project-owned archive/export workflow. Otherwise use `xcodebuild archive` plus an App Store export-options plist.
 - For a direct-download package, freeze a hash manifest of build inputs before archiving, verify it after archive/export and before publishing, then record the final package hash and notarization ID in a local release receipt. This is especially important when the worktree has uncommitted changes: a Git commit alone cannot identify the exact source of that binary. Keep the receipt beside the artifact, not inside a public installer if it lists private paths.
 - Validate an exported macOS `.pkg` or iOS `.ipa` with `scripts/asc-package.sh validate <path>` and upload with `scripts/asc-package.sh upload <path>`.
+- When inspecting a mounted DMG, read the mount point returned for the exact image path by `hdiutil` (for example, its plist output). Never assume `/Volumes/<display name>`: macOS may mount the new image as `<display name> 1` while another image occupies the base name, leading to a false artifact result.
 - Capture the delivery ID and use `scripts/asc-package.sh status <delivery-id>` until processing finishes.
 - Verify the exact marketing version/build appears in the intended app before attaching it.
 
