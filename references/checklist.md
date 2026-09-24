@@ -10,6 +10,7 @@
 - If a direct-sale entitlement service runs as a dedicated OS user, verify that user can traverse each secret directory and read only the intended key files; root-only read checks are insufficient. Verify the service user cannot write the containing directory, and validate the actual systemd/service identity before opening checkout.
 - Time-limited access is rechecked at expiry in the main app and independent extensions or workers; cached grants do not survive expiry or a backward clock jump.
 - Privacy declarations, permissions, capabilities/entitlements, network behavior, and reviewer notes agree with runtime behavior.
+- Debug/test builds cannot share the production app's TCC identity or writable app group; built Debug and Release identities are inspected separately before testing production permission continuity.
 - Screenshots show the current build and contain no personal or internal data.
 - Demo credentials use an account containing only stable demonstration data.
 - Any App Review request for a physical-device video or additional new-developer information is answered with evidence from the exact reviewed build and a reviewer-accessible demo path; the same durable details are saved in App Review Notes.
