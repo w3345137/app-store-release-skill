@@ -18,6 +18,7 @@
 - Metadata survives reload and the processed package is attached to the intended version/submission.
 - Before public availability, website Store/download calls to action remain non-interactive, including for keyboard and accessibility users; do not leave a placeholder `href="#"` on a hidden link. After launch, verify the real destination works.
 - Release mode and markets are intentional.
+- A paid mobile app's required companion desktop app is publicly installable and proven through first-run setup before mobile public release; manual release remains selected until then.
 - Final submission has explicit user authorization and its resulting review/certification state is read back.
 
 ## Apple App Store
